@@ -28,10 +28,13 @@ module.exports = function(options) {
     }
 
     var parsedBody = getParsedBody(this);
+    
+    var headers = this.header;
+    headers["cache-control"] = "max-age=80000, public";
 
     var opt = {
       url: url + '?' + this.querystring,
-      headers: this.header,
+      headers: headers,
       encoding: null,
       method: this.method,
       body: parsedBody
@@ -61,6 +64,7 @@ module.exports = function(options) {
       }
       this.set(name, res.headers[name]);
     }
+    this.set("cache-control", "max-age=80000, public");
 
     if (options.encoding === 'gbk') {
       this.body = iconv.decode(res.body, 'gbk');
